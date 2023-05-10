@@ -7,6 +7,7 @@ package testes;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import jpa.EntityManagerUtil;
 import model.Pais;
 
 /**
@@ -19,16 +20,15 @@ public class TestePersistirPais {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ModelPU");
-        EntityManager em = emf.createEntityManager();
+        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("ModelPU");
+        EntityManager em = EntityManagerUtil.getEntityManager();
         Pais p = new Pais();
-        p.setNome("Brasil");
-        p.setIso("BRA");
+        p.setNome("Chile");
+        p.setIso("CHI");
         em.getTransaction().begin();
         em.persist(p);
         em.getTransaction().commit();
         em.close();
-        emf.close();
     }
     
 }
