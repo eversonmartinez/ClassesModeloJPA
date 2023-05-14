@@ -5,14 +5,19 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -42,7 +47,9 @@ public class Pessoa implements Serializable {
     @Length(max = 14, message = "O telefone não pode ter mais de {max} caracteres")
     @Column(name = "telefone", length=14, nullable=false)
     private String telefone;
-
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    List<Endereco> enderecos = new ArrayList<>();
+    
     public Pessoa() {
     }
     
@@ -77,7 +84,16 @@ public class Pessoa implements Serializable {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-
+    
+    public void adicionarEndereco(Endereco obj){
+        obj.setPessoa(this);
+        this.enderecos.add(obj);
+    }
+    
+    public void adicionarEndereco(int index){
+        this.enderecos.remove(index);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
